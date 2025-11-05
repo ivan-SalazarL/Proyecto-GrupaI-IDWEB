@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Sistema Farmacéutico</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <img src="https://scontent.faqp2-3.fna.fbcdn.net/v/t39.30808-6/299598844_583291859921446_8372384850940572132_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFQaWqkUu3Ahs4CtPBKuuP_S_yDVa9LZvhL_INVr0tm-GhnU9kZCwY22tM8BzBDAtFGYkHRvjPuSB3FtBK8iGN5&_nc_ohc=fCBLjN-nbIAQ7kNvwGt1YCt&_nc_oc=AdlAdv37UusxhFF1LF8UoQgEvToUKYWqJRzb7XC4Yt1ZsYrVRVadxc5PHX9HYunXAVI&_nc_zt=23&_nc_ht=scontent.faqp2-3.fna&_nc_gid=KM3XgT4pY_AFgMPLTp8T3w&oh=00_AfjgYNs2iJp25rp3v0E6YrrxXSEBe-sx0hN0IzY4BWPmEA&oe=69109793"
+      alt="Logo del Sistema" width="50">
+      
+      <a href="index.html">Inicio</a>
+      <a href="categorias.html">Categorías</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html" class="activo">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-secundario">
+      <h1>Contacto y Soporte</h1>
+      <p>¿Tienes dudas sobre el sistema o necesitas soporte técnico?</p>
+    </section>
+
+    <section class="formulario-contacto">
+      <h2>Envíanos un Mensaje</h2>
+      <p>Uno de los miembros del equipo te responderá a la brevedad.</p>
+      
+      <form action="enviar_soporte.php" method="post">
+        
+        <div class="form-group">
+          <label for="nombre">Tu Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Tu Correo:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="asunto">Asunto:</label>
+          <select id="asunto" name="asunto">
+            <option value="soporte">Soporte Técnico</option>
+            <option value="proveedores">Duda sobre Proveedores</option>
+            <option value="pedidos">Problema con un Pedido</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="mensaje">Mensaje:</label>
+          <textarea id="mensaje" name="mensaje" rows="6" required></textarea>
+        </div>
+        
+        <button type="submit" class="cta-button">Enviar Mensaje</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

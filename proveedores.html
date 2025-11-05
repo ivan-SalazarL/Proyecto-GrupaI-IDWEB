@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proveedores - Sistema Farmacéutico</title>
+  <link rel="stylesheet" href="css-/estilos.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <img src="https://scontent.faqp2-3.fna.fbcdn.net/v/t39.30808-6/299598844_583291859921446_8372384850940572132_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFQaWqkUu3Ahs4CtPBKuuP_S_yDVa9LZvhL_INVr0tm-GhnU9kZCwY22tM8BzBDAtFGYkHRvjPuSB3FtBK8iGN5&_nc_ohc=fCBLjN-nbIAQ7kNvwGt1YCt&_nc_oc=AdlAdv37UusxhFF1LF8UoQgEvToUKYWqJRzb7XC4Yt1ZsYrVRVadxc5PHX9HYunXAVI&_nc_zt=23&_nc_ht=scontent.faqp2-3.fna&_nc_gid=KM3XgT4pY_AFgMPLTp8T3w&oh=00_AfjgYNs2iJp25rp3v0E6YrrxXSEBe-sx0hN0IzY4BWPmEA&oe=69109793"
+      alt="Logo del Sistema" width="50">
+      
+      <a href="index.html">Inicio</a>
+      <a href="categorias.html">Categorías</a>
+      <a href="proveedores.html" class="activo">Proveedores</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-secundario">
+      <h1>Directorio de Proveedores</h1>
+      <p>Administra la información de los laboratorios y distribuidores.</p>
+      <a href="nuevo_proveedor.html" class="cta-button">Registrar Nuevo Proveedor</a>
+    </section>
+
+    <section class="lista-items">
+      <h2>Proveedores Activos</h2>
+      <p>Aquí se mostraría una tabla con los proveedores registrados.</p>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre del Proveedor</th>
+            <th>Contacto Principal</th>
+            <th>Teléfono</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FarmaLaboratorio S.A.</td>
+            <td>contacto@farmalabs.com</td>
+            <td>+51 1 555-0100</td>
+            <td><span class="estado-activo">Activo</span></td>
+            <td><a href="editar_prov.html?id=1">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Distribuidora Medilife</td>
+            <td>pedidos@medilife.pe</td>
+            <td>+51 1 555-0210</td>
+            <td><span class="estado-activo">Activo</span></td>
+            <td><a href="editar_prov.html?id=2">Editar</a></td>
+          </tr>
+          <tr>
+            <td>Química Suiza (Ejemplo)</td>
+            <td>ventas.cor@qsuiza.com</td>
+            <td>+51 1 555-0330</td>
+            <td><span class="estado-inactivo">Inactivo</span></td>
+            <td><a href="editar_prov.html?id=3">Editar</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

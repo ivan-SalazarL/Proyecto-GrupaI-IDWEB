@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Force Live</title>
-  <link rel="stylesheet" href="stilos.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pedidos Farmacéuticos</title>
+  <link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="css/layout.css">
 </head>
 <body>
-  <header>
-    <nav>
-      <img src="https://scontent.faqp2-3.fna.fbcdn.net/v/t39.30808-6/299598844_583291859921446_8372384850940572132_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFQaWqkUu3Ahs4CtPBKuuP_S_yDVa9LZvhL_INVr0tm-GhnU9kZCwY22tM8BzBDAtFGYkHRvjPuSB3FtBK8iGN5&_nc_ohc=fCBLjN-nbIAQ7kNvwGt1YCt&_nc_oc=AdlAdv37UusxhFF1LF8UoQgEvToUKYWqJRzb7XC4Yt1ZsYrVRVadxc5PHX9HYunXAVI&_nc_zt=23&_nc_ht=scontent.faqp2-3.fna&_nc_gid=KM3XgT4pY_AFgMPLTp8T3w&oh=00_AfjgYNs2iJp25rp3v0E6YrrxXSEBe-sx0hN0IzY4BWPmEA&oe=69109793"
-      alt="Force Live" width="50">
+
+  <header>
+    <nav>
+            <img src="https://scontent.faqp2-3.fna.fbcdn.net/v/t39.30808-6/299598844_583291859921446_8372384850940572132_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFQaWqkUu3Ahs4CtPBKuuP_S_yDVa9LZvhL_INVr0tm-GhnU9kZCwY22tM8BzBDAtFGYkHRvjPuSB3FtBK8iGN5&_nc_ohc=fCBLjN-nbIAQ7kNvwGt1YCt&_nc_oc=AdlAdv37UusxhFF1LF8UoQgEvToUKYWqJRzb7XC4Yt1ZsYrVRVadxc5PHX9HYunXAVI&_nc_zt=23&_nc_ht=scontent.faqp2-3.fna&_nc_gid=KM3XgT4pY_AFgMPLTp8T3w&oh=00_AfjgYNs2iJp25rp3v0E6YrrxXSEBe-sx0hN0IzY4BWPmEA&oe=69109793"
+      alt="Logo del Sistema" width="50">
+      
       <a href="index.html" class="activo">Inicio</a>
-      <a href="categorias.html">Categorias</a>
-      <a href="proveedores.html">Proveedores</a>
-      <a href="nosotros.html">Nosotros</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
-  <footer>
-    <p>&copy; Desarrollado por Laboratorio Digital © 2025</p>
-  </footer>
+      <a href="categorias.html">Categorías</a>
+      <a href="proveedores.html">Proveedores</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Bienvenido al Sistema de Gestión Farmacéutica</h1>
+      <p>Tu solución integral para la administración y pedido de medicamentos a proveedores.</p>
+      <a href="proveedores.html" class="cta-button">Realizar Nuevo Pedido</a>
+    </section>
+
+    <section class="acciones-rapidas">
+      <h2>Acciones Rápidas</h2>
+      <div class="accion-buscar">
+        <h3>Buscar Medicamento</h3>
+        <p>Encuentra productos por nombre, categoría o principio activo.</p>
+        <form action="#" method="get">
+          <input type="text" name="q" placeholder="Ej: Paracetamol, Antibióticos...">
+          <button type="submit">Buscar</button>
+        </form>
+      </div>
+      
+      <div class="accion-navegar">
+        <h3>Explorar</h3>
+        <p>Navega por las secciones principales del sistema.</p>
+        <ul>
+          <li><a href="categorias.html">Ver Categorías de Medicamentos</a></li>
+          <li><a href="proveedores.html">Consultar Lista de Proveedores</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+    <footer>
+    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
+  </footer>
+
 </body>
 </html>
