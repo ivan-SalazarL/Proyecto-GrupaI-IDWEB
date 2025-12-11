@@ -74,6 +74,7 @@ nav a.activo {
   margin: 0.8rem auto 1.5rem;
 }
 
+/* --- MEJORA: Animaciones optimizadas en CSS --- */
 .cta-button {
   display: inline-block;
   background-color: var(--color-secundario);
@@ -81,12 +82,12 @@ nav a.activo {
   font-weight: 600;
   padding: 0.9rem 2rem;
   border-radius: 50px;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.2s ease-in-out; /* Animación suave */
 }
 
 .cta-button:hover {
   background-color: var(--color-secundario-oscuro);
-  transform: translateY(-3px);
+  transform: scale(1.05) translateY(-2px); /* Efecto de crecimiento */
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
@@ -146,11 +147,13 @@ button, .btn {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.25s ease;
+  transition: all 0.2s ease-in-out; /* Animación suave */
 }
 
 button:hover, .btn:hover {
   background-color: var(--color-primario-oscuro);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .card {
@@ -168,13 +171,21 @@ button:hover, .btn:hover {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
+/* --- MEJORA: Tablas Responsivas --- */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: var(--sombra);
+  margin-bottom: 1rem;
+}
+
 table {
   width: 100%;
+  min-width: 600px; /* Asegura que no se aplaste en móviles */
   border-collapse: collapse;
   background-color: var(--color-tarjeta);
-  box-shadow: var(--sombra);
-  border-radius: 8px;
-  overflow: hidden;
+  /* box-shadow movido al contenedor .table-responsive */
 }
 
 thead {
