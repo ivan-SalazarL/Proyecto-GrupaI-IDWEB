@@ -90,3 +90,87 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// --- 8. Lógica del Modal de Edición (¡Ahora sí actualiza la tabla!) ---
+  
+  let filaAEditar = null; // Variable para recordar qué fila estamos editando
+
+  // Función para abrir el modal
+  window.abrirModal = (nombreActual, estadoActual) => {
+    const modal = document.getElementById("modalEditar");
+    const inputNombre = document.getElementById("editNombre");
+    const selectEstado = document.getElementById("editEstado");
+    
+    // Llenamos el formulario con los datos actuales
+    if(inputNombre) inputNombre.value = nombreActual;
+    
+    // Ajustamos el select al estado correcto (minúsculas para coincidir con el value)
+    if(selectEstado) selectEstado.value = estadoActual.toLowerCase(); 
+    
+    if(modal) modal.style.display = "flex";
+  };
+
+  window.cerrarModal = () => {
+    const modal = document.getElementById("modalEditar");
+    if(modal) modal.style.display = "none";
+    filaAEditar = null; // Limpiamos la referencia al cerrar
+  };
+
+  // 1. Detectar Click en botones "Editar"
+  const tabla = document.querySelector("table");
+  if (tabla) {
+    tabla.addEventListener("click", (e) => {
+      // Verificamos si lo que se clickeó es un enlace o botón de "Editar"
+      if (e.target.closest("a") && e.target.textContent.includes("Editar")) {
+        e.preventDefault();
+        
+        // Guardamos la fila entera (<tr>) en la variable global
+        filaAEditar = e.target.closest("tr");
+        
+        // Obtenemos los datos actuales de esa fila
+        // cells[0] es el Nombre, cells[3] es el Estado (según tu tabla)
+        const nombre = filaAEditar.cells[0].innerText; 
+        const estado = filaAEditar.cells[3].innerText; 
+
+        abrirModal(nombre, estado);
+      }
+    });
+  }
+
+  // 2. Guardar los cambios al enviar el formulario
+  const formEditar = document.getElementById("formEditar");
+  if(formEditar) {
+    formEditar.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (filaAEditar) {
+        // Obtenemos los nuevos valores del formulario
+        const nuevoNombre = document.getElementById("editNombre").value;
+        const nuevoEstado = document.getElementById("editEstado").value; // "activo" o "inactivo"
+
+        // A. Actualizamos el Nombre (Columna 0)
+        filaAEditar.cells[0].innerText = nuevoNombre;
+
+        // B. Actualizamos el Estado y el color del Badge (Columna 3)
+        const celdaEstado = filaAEditar.cells[3];
+        
+        if (nuevoEstado === "activo") {
+          celdaEstado.innerHTML = '<span class="badge badge-activo">Activo</span>';
+        } else {
+          celdaEstado.innerHTML = '<span class="badge badge-inactivo">Inactivo</span>';
+        }
+
+        mostrarNotificacion("Proveedor actualizado correctamente", "success");
+      }
+
+      cerrarModal();
+    });
+  }
+
+  // Cerrar si se hace click fuera del modal
+  window.onclick = (event) => {
+    const modal = document.getElementById("modalEditar");
+    if (event.target == modal) {
+      cerrarModal();
+    }
+  };

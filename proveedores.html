@@ -84,6 +84,29 @@
   <footer>
     <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
   </footer>
+
+  <div id="modalEditar" class="modal-overlay" style="display: none;">
+    <div class="modal-content card">
+      <h3>Editar Proveedor</h3>
+      <form id="formEditar">
+        <div style="text-align: left; margin-bottom: 1rem;">
+          <label>Nombre Empresa</label>
+          <input type="text" id="editNombre" value="FarmaLaboratorio S.A.">
+        </div>
+        <div style="text-align: left; margin-bottom: 1rem;">
+          <label>Estado</label>
+          <select id="editEstado">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn" style="background: #64748b;" onclick="cerrarModal()">Cancelar</button>
+          <button type="submit" class="btn">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <script src="js/funciones.js"></script>
 
 </body>
