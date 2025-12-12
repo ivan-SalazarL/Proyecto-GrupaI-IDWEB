@@ -6,6 +6,7 @@
   <title>Proveedores - Sistema Farmacéutico</title>
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
 </head>
 <body>
 
@@ -19,10 +20,14 @@
       <a href="proveedores.html">Proveedores</a>
       <a href="nosotros.html">Nosotros</a>
       <a href="contacto.html">Contacto</a>
+      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
     </nav>
   </header>
 
   <main>
+    <div class="breadcrumbs">
+      <a href="index.html">Inicio</a> <span>/</span> <strong>Proveedores</strong>
+    </div>
     <section class="hero-secundario">
       <h1>Directorio de Proveedores</h1>
       <p>Administra la información de los laboratorios y distribuidores.</p>
@@ -33,6 +38,10 @@
       <h2>Proveedores Activos</h2>
       <p>A continuación se muestran los proveedores registrados actualmente.</p>
       
+      <div class="filtro-tabla" style="margin-bottom: 1rem;">
+        <input type="text" id="buscadorProveedores" placeholder="🔍 Buscar proveedor por nombre..." style="max-width: 300px;">
+      </div>
+
       <div class="table-responsive">
         <table>
           <thead>
@@ -49,21 +58,21 @@
               <td>FarmaLaboratorio S.A.</td>
               <td>contacto@farmalabs.com</td>
               <td>+51 1 555-0100</td>
-              <td><span class="estado-activo">Activo</span></td>
+              <td><span class="badge badge-activo">Activo</span></td>
               <td><a href="editar_prov.html?id=1">Editar</a></td>
             </tr>
             <tr>
               <td>Distribuidora Medilife</td>
               <td>pedidos@medilife.pe</td>
               <td>+51 1 555-0210</td>
-              <td><span class="estado-activo">Activo</span></td>
+              <td><span class="badge badge-activo">Activo</span></td>
               <td><a href="editar_prov.html?id=2">Editar</a></td>
             </tr>
             <tr>
               <td>Química Suiza (Ejemplo)</td>
               <td>ventas.cor@qsuiza.com</td>
               <td>+51 1 555-0330</td>
-              <td><span class="estado-inactivo">Inactivo</span></td>
+              <td><span class="badge badge-inactivo">Inactivo</span></td>
               <td><a href="editar_prov.html?id=3">Editar</a></td>
             </tr>
           </tbody>

@@ -1,48 +1,92 @@
 document.addEventListener("DOMContentLoaded", () => {
   
-  // 1. Lógica del Menú Activo Automático
-  // Detecta el archivo actual (ej: proveedores.html) o asume index.html si es la raíz
+  // --- 1. Lógica del Menú Activo ---
   const rutaActual = window.location.pathname.split("/").pop() || "index.html";
   const enlaces = document.querySelectorAll("nav a");
-
   enlaces.forEach(enlace => {
-    const href = enlace.getAttribute("href");
-    // Si el enlace coincide con la ruta, le ponemos la clase activo
-    if (href === rutaActual) {
-      enlace.classList.add("activo");
-    } else {
-      enlace.classList.remove("activo");
-    }
+    if (enlace.getAttribute("href") === rutaActual) enlace.classList.add("activo");
+    else enlace.classList.remove("activo");
   });
 
-  // 2. Manejo de Formulario de Contacto (Simulación)
-  const formularioSoporte = document.querySelector("form[action='enviar_soporte.php']");
-  if (formularioSoporte) {
-    formularioSoporte.addEventListener("submit", e => {
-      // Como no hay backend PHP real en este entorno, prevenimos el envío real
-      // Si tuvieras PHP, quitarías el e.preventDefault()
-      e.preventDefault();
-      alert("Tu mensaje ha sido enviado correctamente. ¡Gracias por contactarnos!");
-      formularioSoporte.reset();
-    });
+  // --- 2. Modo Oscuro (Persistente) ---
+  const btnTema = document.getElementById("btnTema");
+  const body = document.body;
+  
+  // Revisar preferencia guardada
+  if (localStorage.getItem("tema") === "oscuro") {
+    body.classList.add("dark-mode");
+    if(btnTema) btnTema.textContent = "☀️";
   }
 
-  // 3. Manejo del Buscador (Simulación)
-  const formBuscador = document.querySelector(".accion-buscar form");
-  if (formBuscador) {
-    formBuscador.addEventListener("submit", e => {
-      e.preventDefault();
-      const input = formBuscador.querySelector("input");
-      const consulta = input ? input.value.trim() : "";
+  if (btnTema) {
+    btnTema.addEventListener("click", () => {
+      body.classList.toggle("dark-mode");
       
-      if (consulta) {
-        alert(`Simulando búsqueda para: ${consulta}`);
+      // Guardar preferencia y cambiar icono
+      if (body.classList.contains("dark-mode")) {
+        localStorage.setItem("tema", "oscuro");
+        btnTema.textContent = "☀️";
+        mostrarNotificacion("Modo oscuro activado", "success");
       } else {
-        alert("Por favor ingresa un nombre o categoría para buscar.");
+        localStorage.setItem("tema", "claro");
+        btnTema.textContent = "🌙";
+        mostrarNotificacion("Modo claro activado");
       }
     });
   }
 
-  // NOTA: Se eliminaron los eventos mouseenter/mouseleave porque
-  // ahora las animaciones se manejan eficientemente desde CSS.
+  // --- 3. Sistema de Notificaciones (Toast) ---
+  // Crea el contenedor si no existe
+  if (!document.getElementById("toast-container")) {
+    const container = document.createElement("div");
+    container.id = "toast-container";
+    document.body.appendChild(container);
+  }
+
+  window.mostrarNotificacion = (mensaje, tipo = "info") => {
+    const container = document.getElementById("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${tipo}`;
+    toast.innerHTML = `<span>${mensaje}</span>`;
+    
+    container.appendChild(toast);
+
+    // Eliminar del DOM después de 3 segundos
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  };
+
+  // --- 4. Reemplazo de Alerts en Formularios ---
+  const forms = document.querySelectorAll("form");
+  forms.forEach(form => {
+    form.addEventListener("submit", (e) => {
+      // Si no es login (que redirige), prevenimos y mostramos toast
+      if (form.getAttribute("action").includes(".php") || form.getAttribute("action") === "#") {
+        e.preventDefault();
+        const input = form.querySelector("input");
+        if(input && input.value.trim() !== "") {
+          mostrarNotificacion("¡Acción realizada con éxito!", "success");
+          form.reset();
+        } else {
+          mostrarNotificacion("Por favor completa los campos", "error");
+        }
+      }
+    });
+  });
+
+  // --- 5. Buscador de Tabla (Si existe) ---
+  const inputBuscador = document.getElementById("buscadorProveedores");
+  const tablaProveedores = document.querySelector("table tbody");
+
+  if (inputBuscador && tablaProveedores) {
+    inputBuscador.addEventListener("keyup", (e) => {
+      const texto = e.target.value.toLowerCase();
+      const filas = tablaProveedores.querySelectorAll("tr");
+      filas.forEach(fila => {
+        const contenido = fila.innerText.toLowerCase();
+        fila.style.display = contenido.includes(texto) ? "" : "none";
+      });
+    });
+  }
 });
