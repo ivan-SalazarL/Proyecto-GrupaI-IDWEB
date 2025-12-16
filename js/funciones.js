@@ -174,3 +174,106 @@ document.addEventListener("DOMContentLoaded", () => {
       cerrarModal();
     }
   };
+  // ==========================================
+  // --- 8. GESTIÓN DE PROVEEDORES (LOCALSTORAGE) ---
+  // ==========================================
+
+  const cuerpoTabla = document.getElementById("tablaProveedoresBody");
+
+  // Solo ejecutamos esto si estamos en la página de proveedores
+  if (cuerpoTabla) {
+
+    // 1. Datos Iniciales (Se cargarán si es la primera vez que entras)
+    const datosPorDefecto = [
+      { id: 1, nombre: "FarmaLaboratorio S.A.", contacto: "contacto@farmalabs.com", tel: "+51 1 555-0100", estado: "activo" },
+      { id: 2, nombre: "Distribuidora Medilife", contacto: "pedidos@medilife.pe", tel: "+51 1 555-0210", estado: "activo" },
+      { id: 3, nombre: "Química Suiza", contacto: "ventas.cor@qsuiza.com", tel: "+51 1 555-0330", estado: "inactivo" }
+    ];
+
+    // 2. Función para obtener datos (del LocalStorage o los por defecto)
+    function obtenerProveedores() {
+      const guardados = localStorage.getItem("misProveedores");
+      return guardados ? JSON.parse(guardados) : datosPorDefecto;
+    }
+
+    // 3. Función para Guardar en el navegador
+    function guardarEnStorage(datos) {
+      localStorage.setItem("misProveedores", JSON.stringify(datos));
+      renderizarTabla(); // Redibujar la tabla
+    }
+
+    // 4. Función para "Pintar" la tabla en el HTML
+    function renderizarTabla() {
+      cuerpoTabla.innerHTML = ""; // Limpiar tabla
+      const proveedores = obtenerProveedores();
+
+      proveedores.forEach(prov => {
+        // Definir color del badge según estado
+        const badgeClass = prov.estado === "activo" ? "badge-activo" : "badge-inactivo";
+        const estadoTexto = prov.estado.charAt(0).toUpperCase() + prov.estado.slice(1);
+
+        const fila = `
+          <tr>
+            <td>${prov.nombre}</td>
+            <td>${prov.contacto}</td>
+            <td>${prov.tel}</td>
+            <td><span class="badge ${badgeClass}">${estadoTexto}</span></td>
+            <td>
+              <a href="#" class="btn-editar" data-id="${prov.id}">Editar</a>
+            </td>
+          </tr>
+        `;
+        cuerpoTabla.innerHTML += fila;
+      });
+    }
+
+    // --- Inicializar la tabla al cargar la página ---
+    renderizarTabla();
+
+    // 5. Lógica para Abrir el Modal al hacer click en "Editar"
+    let idEditando = null; // Variable para saber a quién estamos editando
+
+    cuerpoTabla.addEventListener("click", (e) => {
+      if (e.target.classList.contains("btn-editar")) {
+        e.preventDefault();
+        const id = parseInt(e.target.getAttribute("data-id"));
+        const proveedores = obtenerProveedores();
+        const proveedor = proveedores.find(p => p.id === id);
+
+        if (proveedor) {
+          idEditando = id;
+          // Llenar el modal con los datos
+          document.getElementById("editNombre").value = proveedor.nombre;
+          document.getElementById("editEstado").value = proveedor.estado;
+          
+          // Mostrar modal (usando tu función existente o estilo directo)
+          const modal = document.getElementById("modalEditar");
+          if(modal) modal.style.display = "flex";
+        }
+      }
+    });
+
+    // 6. Guardar cambios del Formulario (Modal)
+    const formEditar = document.getElementById("formEditar");
+    if (formEditar) {
+      formEditar.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const nuevoNombre = document.getElementById("editNombre").value;
+        const nuevoEstado = document.getElementById("editEstado").value;
+
+        // Recuperar, modificar y guardar
+        let proveedores = obtenerProveedores();
+        const indice = proveedores.findIndex(p => p.id === idEditando);
+        
+        if (indice !== -1) {
+          proveedores[indice].nombre = nuevoNombre;
+          proveedores[indice].estado = nuevoEstado;
+          
+          guardarEnStorage(proveedores); // ¡Aquí ocurre la magia de guardar!
+          mostrarNotificacion("Proveedor actualizado correctamente", "success");
+          cerrarModal();
+        }
+      });
+    }
+  }
