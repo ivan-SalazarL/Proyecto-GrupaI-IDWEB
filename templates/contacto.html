@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - Sistema Farmacéutico</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <img src="https://placehold.co/50x50/007bff/ffffff?text=SF" 
+           alt="Logo del Sistema" width="50" style="border-radius: 50%;">
+      
+      <a href="{{ url_for('inicio') }}">Inicio</a>
+      <a href="{{ url_for('categorias') }}">Categorías</a>
+      <a href="{{ url_for('proveedores') }}">Proveedores</a>
+      <a href="{{ url_for('nosotros') }}">Nosotros</a>
+      <a href="{{ url_for('contacto') }}">Contacto</a>
+      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="breadcrumbs">
+      <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Contacto</strong>
+    </div>
+    <section class="hero-secundario">
+      <h1>Contacto y Soporte</h1>
+      <p>¿Tienes dudas sobre el sistema o necesitas soporte técnico?</p>
+    </section>
+
+    <section class="formulario-contacto">
+      <h2>Envíanos un Mensaje</h2>
+      <p>Uno de los miembros del equipo te responderá a la brevedad.</p>
+      
+      <form method="post" action="{{ url_for('contacto') }}">
+        
+        <div class="form-group">
+          <label for="nombre">Tu Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Tu Correo:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="asunto">Asunto:</label>
+          <select id="asunto" name="asunto">
+            <option value="soporte">Soporte Técnico</option>
+            <option value="proveedores">Duda sobre Proveedores</option>
+            <option value="pedidos">Problema con un Pedido</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="mensaje">Mensaje:</label>
+          <textarea id="mensaje" name="mensaje" rows="6" required></textarea>
+        </div>
+        
+        <button type="submit" class="cta-button">Enviar Mensaje</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/funciones.js') }}"></script>
+
+</body>
+</html>
