@@ -1,96 +1,75 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proveedores - Sistema Farmacéutico</title>
+{% extends "base.html" %}
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% block title %}Proveedores - Sistema Farmacéutico{% endblock %}
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
-</head>
-<body>
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Proveedores</strong>
+</div>
 
-  <header>
-    <nav>
-      <img src="https://placehold.co/50x50/007bff/ffffff?text=SF" 
-           alt="Logo del Sistema" width="50" style="border-radius: 50%;">
-      
-      <a href="{{ url_for('inicio') }}">Inicio</a>
-      <a href="{{ url_for('categorias') }}">Categorías</a>
-      <a href="{{ url_for('proveedores') }}">Proveedores</a>
-      <a href="{{ url_for('nosotros') }}">Nosotros</a>
-      <a href="{{ url_for('contacto') }}">Contacto</a>
-      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
-    </nav>
-  </header>
-
-  <main>
-    <div class="breadcrumbs">
-      <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Proveedores</strong>
-    </div>
-    <section class="hero-secundario">
-      <h1>Directorio de Proveedores</h1>
-      <p>Administra la información de los laboratorios y distribuidores.</p>
-      <a href="#" class="cta-button">Registrar Nuevo Proveedor</a>
-    </section>
-
-    <section class="lista-items">
-      <h2>Proveedores Activos</h2>
-      <p>A continuación se muestran los proveedores registrados actualmente.</p>
-      
-      <div class="filtro-tabla" style="margin-bottom: 1rem;">
-        <input type="text" id="buscadorProveedores" placeholder="🔍 Buscar proveedor por nombre..." style="max-width: 300px;">
-      </div>
-
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre del Proveedor</th>
-              <th>Contacto Principal</th>
-              <th>Teléfono</th>
-              <th>Estado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tablaProveedoresBody">
-            <!-- luego se cargará desde la BD -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
-  </footer>
-
-  <div id="modalEditar" class="modal-overlay" style="display: none;">
-    <div class="modal-content card">
-      <h3>Editar Proveedor</h3>
-      <form id="formEditar">
-        <div style="text-align: left; margin-bottom: 1rem;">
-          <label>Nombre Empresa</label>
-          <input type="text" id="editNombre" value="FarmaLaboratorio S.A.">
-        </div>
-        <div style="text-align: left; margin-bottom: 1rem;">
-          <label>Estado</label>
-          <select id="editEstado">
-            <option value="activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
-          </select>
-        </div>
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-          <button type="button" class="btn" style="background: #64748b;" onclick="cerrarModal()">Cancelar</button>
-          <button type="submit" class="btn">Guardar Cambios</button>
-        </div>
+<section class="hero-secundario">
+  <h1>Directorio de Proveedores</h1>
+  <p>Administra la información de los laboratorios y distribuidores (CRUD MySQL).</p>
+  
+  <div class="card" style="margin-top: 1rem; text-align: left;">
+      <h3>Registrar Nuevo Proveedor</h3>
+      <form action="{{ url_for('agregar_proveedor') }}" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+          <div>
+              <label>Nombre:</label>
+              <input type="text" name="nombre" required style="margin:0;">
+          </div>
+          <div>
+              <label>Contacto:</label>
+              <input type="text" name="contacto" required style="margin:0;">
+          </div>
+          <div>
+              <label>Teléfono:</label>
+              <input type="text" name="telefono" required style="margin:0;">
+          </div>
+          <button type="submit" class="cta-button">Guardar</button>
       </form>
-    </div>
   </div>
+</section>
 
-  <script src="{{ url_for('static', filename='js/funciones.js') }}"></script>
-
-</body>
-</html>
+<section class="lista-items">
+  <h2>Proveedores Registrados</h2>
+  
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Contacto</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in proveedores %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.contacto }}</td>
+            <td>{{ p.telefono }}</td>
+            <td>
+                <span class="badge {% if p.estado == 'activo' %}badge-activo{% else %}badge-inactivo{% endif %}">
+                    {{ p.estado }}
+                </span>
+            </td>
+            <td>
+                <a href="{{ url_for('editar_proveedor', id=p.id) }}" class="btn" style="background-color: #ffc107; color: #000; font-size: 0.8rem;">Editar</a>
+                <a href="{{ url_for('eliminar_proveedor', id=p.id) }}" class="btn" style="background-color: #dc3545; font-size: 0.8rem;" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No hay proveedores registrados en la Base de Datos.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

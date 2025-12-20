@@ -1,80 +1,45 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Categorías - Sistema Farmacéutico</title>
+{% extends "base.html" %}
 
- <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
- <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% block title %}Categorías - Sistema Farmacéutico{% endblock %}
 
- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
-</head>
-<body>
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Categorías</strong>
+</div>
 
- <header>
-  <nav>
-    <img src="https://placehold.co/50x50/007bff/ffffff?text=SF" 
-         alt="Logo del Sistema" width="50" style="border-radius: 50%;">
-   
-      <a href="{{ url_for('inicio') }}">Inicio</a>
-      <a href="{{ url_for('categorias') }}">Categorías</a>
-      <a href="{{ url_for('proveedores') }}">Proveedores</a>
-      <a href="{{ url_for('nosotros') }}">Nosotros</a>
-      <a href="{{ url_for('contacto') }}">Contacto</a>
-      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
-    </nav>
- </header>
+<section class="hero-secundario">
+  <h1>Gestión de Categorías</h1>
+  <p>Explora las categorías de medicamentos disponibles.</p>
+</section>
 
-  <main>
-    <div class="breadcrumbs">
-      <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Categorias</strong>
+<section class="lista-items">
+  <h2>Categorías Existentes</h2>
+  <div class="grid-categorias">
+    
+    <div class="card">
+      <h3>Analgésicos</h3>
+      <p>Medicamentos para el alivio del dolor.</p>
+      <a href="#" class="btn">Ver productos</a>
     </div>
-    <section class="hero-secundario">
-      <h1>Gestión de Categorías</h1>
-      <p>Explora, añade o edita las categorías de medicamentos del sistema.</p>
-      <a href="{{ url_for('categorias') }}" class="cta-button">Añadir Nueva Categoría</a>
-    </section>
 
-    <section class="lista-items">
-      <h2>Categorías Existentes</h2>
-      <p>Aquí se muestra la lista de categorías disponibles.</p>
-      
-      <div class="grid-categorias">
-        
-        <div class="card">
-          <h3>Analgésicos</h3>
-          <p>Medicamentos para el alivio del dolor.</p>
-          <a href="{{ url_for('categorias') }}?id=1">Ver productos</a>
-        </div>
+    <div class="card">
+      <h3>Antibióticos</h3>
+      <p>Para tratar infecciones bacterianas.</p>
+      <a href="#" class="btn">Ver productos</a>
+    </div>
 
-        <div class="card">
-          <h3>Antibióticos</h3>
-          <p>Para tratar infecciones bacterianas.</p>
-          <a href="{{ url_for('categorias') }}?id=2">Ver productos</a>
-        </div>
+    <div class="card">
+      <h3>Antiinflamatorios</h3>
+      <p>Reducen la inflamación y el dolor.</p>
+      <a href="#" class="btn">Ver productos</a>
+    </div>
 
-        <div class="card">
-          <h3>Antiinflamatorios</h3>
-          <p>Reducen la inflamación y el dolor.</p>
-          <a href="{{ url_for('categorias') }}?id=3">Ver productos</a>
-        </div>
+    <div class="card">
+      <h3>Vitaminas</h3>
+      <p>Suplementos nutricionales.</p>
+      <a href="#" class="btn">Ver productos</a>
+    </div>
 
-        <div class="card">
-          <h3>Vitaminas y Suplementos</h3>
-          <p>Suplementos nutricionales y vitamínicos.</p>
-          <a href="{{ url_for('categorias') }}?id=4">Ver productos</a>
-        </div>
-
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
-  </footer>
-
-  <script src="{{ url_for('static', filename='js/funciones.js') }}"></script>
-
-</body>
-</html>
+  </div>
+</section>
+{% endblock %}

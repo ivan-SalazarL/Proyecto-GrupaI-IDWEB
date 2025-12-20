@@ -1,73 +1,49 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nosotros - Sistema Farmacéutico</title>
+{% extends "base.html" %}
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+{% block title %}Nosotros - Sistema Farmacéutico{% endblock %}
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
-</head>
-<body>
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Nosotros</strong>
+</div>
 
-  <header>
-    <nav>
-      <img src="https://placehold.co/50x50/007bff/ffffff?text=SF" 
-           alt="Logo del Sistema" width="50" style="border-radius: 50%;">
-      
-      <a href="{{ url_for('inicio') }}">Inicio</a>
-      <a href="{{ url_for('categorias') }}">Categorías</a>
-      <a href="{{ url_for('proveedores') }}">Proveedores</a>
-      <a href="{{ url_for('nosotros') }}">Nosotros</a>
-      <a href="{{ url_for('contacto') }}">Contacto</a>
-      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
-    </nav>
-  </header>
+<section class="hero-secundario">
+  <h1>Sobre Nuestro Equipo</h1>
+  <p>Conoce a los desarrolladores detrás de este proyecto.</p>
+</section>
 
-  <main>
-    <div class="breadcrumbs">
-      <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Nosotros</strong>
+<section class="equipo">
+  <h2>El Equipo de Desarrollo</h2>
+  <div class="grid-categorias">
+    
+    <div class="card">
+      <div style="font-size: 3rem;">👨‍💻</div>
+      <h3>Iván Salazar</h3>
+      <p><strong>Jefe de Proyecto / Backend</strong></p>
+      <p>Encargado de la lógica en Python y Flask.</p>
     </div>
-    <section class="hero-secundario">
-      <h1>Sobre Nuestro Equipo</h1>
-      <p>Conoce a los desarrolladores de este proyecto.</p>
-    </section>
 
-    <section class="mision">
-      <h2>Nuestra Misión</h2>
-      <p>
-        Nuestro objetivo es crear una herramienta intuitiva y eficiente que facilite la gestión de pedidos de medicamentos,
-        conectando farmacias con proveedores de manera transparente y ordenada, como parte de nuestro proyecto formativo.
-      </p>
-    </section>
+    <div class="card">
+      <div style="font-size: 3rem;">🎨</div>
+      <h3>Franklin Ulloa</h3>
+      <p><strong>Frontend / UX</strong></p>
+      <p>Diseño de interfaces y experiencia de usuario.</p>
+    </div>
 
-    <section class="equipo">
-      <h2>El Equipo</h2>
-      <div class="equipo-grid">
-        <div class="miembro-card">
-          <h3>Iván Salazar</h3>
-          <p>Jefe de Proyecto / Backend</p>
-        </div>
-        <div class="miembro-card">
-          <h3>Franklin Ulloa</h3>
-          <p>UX/UI / Frontend</p>
-        </div>
-        <div class="miembro-card">
-          <h3>Michael Vasquez</h3>
-          <p>Analista de Base de Datos</p>
-        </div>
-      </div>
-    </section>
+    <div class="card">
+      <div style="font-size: 3rem;">🗄️</div>
+      <h3>Michael Vasquez</h3>
+      <p><strong>Base de Datos</strong></p>
+      <p>Estructuración y gestión de MySQL.</p>
+    </div>
+    
+    <div class="card">
+      <div style="font-size: 3rem;">📝</div>
+      <h3>Samuel Menéndez</h3>
+      <p><strong>Frontend / Documentación</strong></p>
+      <p>Apoyo en interfaces y manuales.</p>
+    </div>
 
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Sistema de Gestión Farmacéutica. Todos los derechos reservados.</p>
-  </footer>
-
-  <script src="{{ url_for('static', filename='js/funciones.js') }}"></script>
-
-</body>
-</html>
+  </div>
+</section>
+{% endblock %}

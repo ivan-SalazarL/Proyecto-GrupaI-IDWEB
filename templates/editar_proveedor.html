@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Proveedor{% endblock %}
+
+{% block content %}
+<section class="card" style="max-width: 500px; margin: 2rem auto;">
+    <h2>Editar Proveedor</h2>
+    <form method="POST">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" value="{{ p.nombre }}" required>
+        
+        <label>Contacto:</label>
+        <input type="text" name="contacto" value="{{ p.contacto }}" required>
+        
+        <label>Teléfono:</label>
+        <input type="text" name="telefono" value="{{ p.telefono }}" required>
+        
+        <label>Estado:</label>
+        <select name="estado" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            <option value="activo" {% if p.estado == 'activo' %}selected{% endif %}>Activo</option>
+            <option value="inactivo" {% if p.estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+        </select>
+        
+        <button type="submit" class="cta-button">Guardar Cambios</button>
+        <a href="{{ url_for('proveedores') }}" class="btn" style="background:#6c757d; margin-left:10px;">Cancelar</a>
+    </form>
+</section>
+{% endblock %}
