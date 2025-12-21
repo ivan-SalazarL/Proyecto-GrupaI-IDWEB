@@ -176,7 +176,12 @@ nav a.activo {
 }
 
 /* Formularios e Inputs */
-input[type="text"], input[type="email"], select, textarea {
+/* AHORA INCLUIMOS input[type="password"] */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+select, 
+textarea {
   width: 100%;
   padding: 0.8rem 1.1rem;
   border: 1px solid var(--color-borde);
@@ -421,4 +426,128 @@ footer p {
 @keyframes slideDown {
   from { transform: translateY(-50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+/* --- ESTILOS EXCLUSIVOS PÁGINA LOGIN (Versión con Imagen) --- */
+
+.login-wrapper {
+  display: flex;
+  /* Ahora usamos 'center' porque tenemos dos elementos que ocuparán el espacio */
+  justify-content: center;
+  align-items: stretch; /* Hace que ambas columnas tengan la misma altura */
+  min-height: 75vh;     /* Un poco más de altura */
+  padding: 2rem;
+  gap: 2rem; /* Espacio entre la imagen y el formulario */
+  
+  /* Fondo general más suave, la imagen hará el trabajo visual pesado */
+  background-color: var(--color-fondo);
+}
+
+/* --- Columna Izquierda: Imagen --- */
+.login-image {
+  flex: 1; /* Toma el espacio disponible */
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  /* Ocultamos la imagen en pantallas pequeñas para que el formulario no se aplaste */
+  display: none; 
+}
+
+/* Hacemos que la imagen se vea en pantallas medianas (tablets) hacia arriba */
+@media (min-width: 900px) {
+  .login-image {
+    display: block;
+    /* Animación suave de entrada */
+    animation: fadeIn 0.8s ease-out;
+  }
+}
+
+.login-image img {
+  width: 100%;
+  height: 100%;
+  /* 'cover' es CRÍTICO: recorta la imagen para llenar el espacio sin deformarse */
+  object-fit: cover; 
+  /* Un filtro opcional para que la imagen combine mejor con tus colores azules */
+  filter: brightness(0.9) contrast(1.1);
+}
+
+
+/* --- Columna Derecha: Formulario --- */
+.login-card {
+  background-color: var(--color-tarjeta);
+  padding: 3rem; /* Un poco más de espacio interno */
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 450px; /* Un poco más ancho */
+  border: 1px solid var(--color-borde);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra el contenido del formulario verticalmente */
+
+  /* Animación de entrada desde la derecha */
+  animation: slideInRight 0.6s ease-out;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h1 {
+    color: var(--color-primario-oscuro);
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: var(--color-texto-secundario);
+    font-size: 0.95rem;
+}
+
+
+/* --- Animaciones --- */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+/* --- Ajustes para Móviles --- */
+@media (max-width: 899px) {
+  .login-wrapper {
+    padding: 1rem;
+    align-items: center; /* Centrado simple en móvil */
+  }
+  .login-card {
+    padding: 2rem;
+    box-shadow: none; /* Sombra más ligera en móvil */
+    border: none;
+  }
+}
+/* --- BOTÓN LOGIN EN NAV --- */
+.btn-login-nav {
+  background-color: var(--color-primario); /* Azul sólido */
+  color: white !important; /* Texto blanco forzado */
+  padding: 0.6rem 1.5rem !important; /* Más relleno para parecer botón */
+  border-radius: 50px; /* Bordes redondos estilo pastilla */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra suave */
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-login-nav:hover {
+  background-color: var(--color-primario-oscuro);
+  transform: translateY(-2px); /* Se eleva un poco al pasar el mouse */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Ajuste para que se vea bien en modo oscuro */
+body.dark-mode .btn-login-nav {
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Resplandor azulado */
 }

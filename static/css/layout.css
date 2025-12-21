@@ -28,14 +28,34 @@ header {
 }
 
 nav {
-  display: flex; /* Esto asegura que estén en fila (horizontal) */
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  justify-content: space-between; /* Esto empuja los grupos a los extremos */
   max-width: 1100px;
   margin: 0 auto;
   padding: 0.8rem 1.5rem;
-  gap: 1rem;
+  /* Quitamos gap aquí para que space-between haga el trabajo */
+}
+
+/* Configuramos los grupos internos */
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espacio entre los elementos de cada grupo */
+}
+
+/* AJUSTE PARA MÓVIL (Al final del archivo layout.css) */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .nav-left, .nav-right {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 0.8rem;
+  }
 }
 
 nav img {

@@ -11,29 +11,32 @@
 
   <header>
     <nav>
-      <img src="https://placehold.co/50x50/007bff/ffffff?text=SF" alt="Logo" width="50" style="border-radius: 50%;">
+      <div class="nav-left">
+        <img src="https://static.vecteezy.com/system/resources/previews/000/615/933/original/medical-cross-and-health-pharmacy-logo-vector-template.jpg" alt="Logo" width="50" style="border-radius: 50%;">
+        
+        <a href="{{ url_for('inicio') }}">Inicio</a>
+        <a href="{{ url_for('categorias') }}">Categorías</a>
+        <a href="{{ url_for('proveedores') }}">Proveedores</a>
+        <a href="{{ url_for('nosotros') }}">Nosotros</a>
+        <a href="{{ url_for('contacto') }}">Contacto</a>
+      </div>
       
-      <a href="{{ url_for('inicio') }}">Inicio</a>
-      <a href="{{ url_for('categorias') }}">Categorías</a>
-      <a href="{{ url_for('proveedores') }}">Proveedores</a>
-      <a href="{{ url_for('nosotros') }}">Nosotros</a>
-      <a href="{{ url_for('contacto') }}">Contacto</a>
-      
-      {% if session.get('usuario') %}
-          <a href="{{ url_for('nuevo_pedido') }}">📦 Nuevo Pedido</a>
-          <span style="color: white; margin-left: 10px; font-size: 0.9rem;">Hola, {{ session['usuario'] }}</span>
-          
-          {% if session.get('rol') == 'admin' %}
-            <a href="{{ url_for('admin') }}" style="color: #ffcc00;">Panel Admin</a>
-          {% endif %}
-          
-          <a href="{{ url_for('logout') }}" class="btn-logout" style="background-color: #dc3545; padding: 5px 10px; border-radius: 5px;">Salir</a>
-      {% else %}
-          <a href="{{ url_for('login') }}">Iniciar Sesión</a>
-          <a href="{{ url_for('register') }}">Registrarse</a>
-      {% endif %}
-      
-      <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
+      <div class="nav-right">
+        {% if session.get('usuario') %}
+            <a href="{{ url_for('nuevo_pedido') }}">📦 Nuevo Pedido</a>
+            <span style="color: white; font-size: 0.9rem;">Hola, {{ session['usuario'] }}</span>
+            
+            {% if session.get('rol') == 'admin' %}
+              <a href="{{ url_for('admin') }}" style="color: #ffcc00;">Panel Admin</a>
+            {% endif %}
+            
+            <a href="{{ url_for('logout') }}" class="btn-logout" style="background-color: #dc3545; padding: 5px 10px; border-radius: 5px;">Salir</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="btn-login-nav">Iniciar Sesión</a>
+        {% endif %}
+        
+        <button id="btnTema" class="btn-tema" title="Cambiar Tema">🌙</button>
+      </div>
     </nav>
   </header>
 
