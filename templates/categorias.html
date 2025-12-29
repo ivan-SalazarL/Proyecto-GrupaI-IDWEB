@@ -4,36 +4,39 @@
 
 {% block content %}
 <div class="breadcrumbs">
-  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Categorías</strong>
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Categorías Terapéuticas</strong>
 </div>
 
 <section class="hero-secundario">
-  <h1>Gestión de Categorías</h1>
-  <p>Explora las clases farmacológicas más comunes (Fuente: API OpenFDA).</p>
+  <h1>Categorías Terapéuticas</h1>
+  <p>Explora nuestro inventario organizado por el uso principal del medicamento.</p>
 </section>
 
 <section class="lista-items">
-  <h2>Clases Farmacológicas Principales</h2>
   
   <div class="grid-categorias">
     
     {% for cat in categorias %}
     <div class="card">
-      <div style="font-size: 2rem; margin-bottom: 10px;">💊</div>
+      <div style="font-size: 2.5rem; margin-bottom: 10px;">💊</div>
       
-      <h3>{{ cat.term|title }}</h3>
+      <h3>{{ cat.nombre }}</h3>
       
-      <p style="color: var(--color-texto-secundario); margin-bottom: 1rem;">
-          Esta categoría contiene oficialmente <strong>{{ cat.count }}</strong> productos registrados en la FDA.
+      <p style="font-size: 0.9rem; margin-bottom: 0.5rem; color: #555;">
+        {{ cat.descripcion }}
       </p>
       
-      <a href="{{ url_for('buscar_medicamentos', busqueda=cat.term) }}" class="btn">Ver productos</a>
+      <p style="color: var(--color-texto-secundario); margin-bottom: 1rem;">
+          Disponibles: <strong>{{ cat.total }}</strong> productos
+      </p>
+      
+      <a href="{{ url_for('buscar_medicamentos', busqueda=cat.busqueda) }}" class="btn">Ver Catálogo</a>
     </div>
     
     {% else %}
-    <div class="card" style="grid-column: 1 / -1; background-color: #fff3cd; border-color: #ffeeba;">
-      <h3 style="color: #856404;">⚠️ No se pudieron cargar las categorías</h3>
-      <p>Hubo un problema de conexión con la API externa. Por favor intenta más tarde.</p>
+    <div class="card" style="grid-column: 1 / -1;">
+      <h3>Cargando...</h3>
+      <p>No se encontraron categorías definidas.</p>
     </div>
     {% endfor %}
 
