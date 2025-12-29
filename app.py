@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
-import requests  # <--- IMPORTANTE: Necesario para la API openFDA
+import requests  # Necesario para conectar con CIMA y FDA
 
 app = Flask(__name__)
 app.secret_key = "clave_secreta_super_segura"
@@ -10,45 +10,9 @@ def get_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="", # Ajusta si tu MySQL tiene contraseña
+        password="", 
         database="SistemaFarmaceutico"
     )
-
-# --- NUEVA FUNCIÓN: API OPENFDA ---
-@app.route("/buscar_medicamentos", methods=["GET", "POST"])
-def buscar_medicamentos():
-    resultados = []
-    busqueda = ""
-    error = None
-
-    if request.method == "POST":
-        busqueda = request.form.get("busqueda", "").strip()
-        
-        if busqueda:
-            try:
-                # Consultamos la API pública de openFDA
-                url = f"https://api.fda.gov/drug/label.json?search=openfda.brand_name:{busqueda}&limit=5"
-                
-                respuesta = requests.get(url)
-                datos = respuesta.json()
-
-                if "results" in datos:
-                    for item in datos["results"]:
-                        info = {
-                            "marca": item.get("openfda", {}).get("brand_name", ["N/A"])[0],
-                            "generico": item.get("openfda", {}).get("generic_name", ["N/A"])[0],
-                            "fabricante": item.get("openfda", {}).get("manufacturer_name", ["N/A"])[0],
-                            "proposito": item.get("purpose", ["No especificado"])[0]
-                        }
-                        resultados.append(info)
-                else:
-                    error = "No se encontraron medicamentos con ese nombre."
-            except Exception as e:
-                error = "Error al conectar con openFDA. Intenta nuevamente."
-                print(f"Error API: {e}")
-
-    return render_template("buscar_medicamentos.html", resultados=resultados, busqueda=busqueda, error=error)
-
 
 # --- RUTAS PÚBLICAS ---
 
@@ -56,9 +20,25 @@ def buscar_medicamentos():
 def inicio():
     return render_template("index.html")
 
+# --- CATEGORÍAS (API FDA) ---
+# Usamos FDA aquí para llenar las categorías automáticamente sin escribir a mano.
 @app.route("/categorias")
 def categorias():
-    return render_template("categorias.html")
+    # Consultamos las clases farmacológicas más comunes
+    url = "https://api.fda.gov/drug/label.json?count=openfda.pharm_class_epc.exact&limit=12"
+    lista_categorias = []
+    
+    try:
+        response = requests.get(url)
+        data = response.json()
+        
+        if "results" in data:
+            lista_categorias = data["results"]
+            
+    except Exception as e:
+        print(f"Error API FDA: {e}")
+        
+    return render_template("categorias.html", categorias=lista_categorias)
 
 @app.route("/nosotros")
 def nosotros():
@@ -71,7 +51,54 @@ def contacto():
         return redirect(url_for("contacto"))
     return render_template("contacto.html")
 
-# --- AUTENTICACIÓN ---
+# --- BUSCADOR DE MEDICAMENTOS (API CIMA - ESPAÑA) ---
+# Mejor opción para consumidores peruanos por el idioma español.
+@app.route("/buscar_medicamentos", methods=["GET", "POST"])
+def buscar_medicamentos():
+    resultados = []
+    busqueda = ""
+    error = None
+
+    if request.method == "POST":
+        busqueda = request.form.get("busqueda", "").strip()
+        
+        if busqueda:
+            try:
+                # Conexión a la API de la AEMPS (España)
+                url = f"https://cima.aemps.es/cima/rest/medicamentos?nombre={busqueda}"
+                
+                # CIMA a veces requiere headers básicos para no bloquear bots, por seguridad:
+                headers = {'User-Agent': 'SistemaFarmaceutico/1.0'}
+                respuesta = requests.get(url, headers=headers)
+                
+                if respuesta.status_code == 200:
+                    datos = respuesta.json()
+                    
+                    # La API devuelve una lista bajo la clave "resultados"
+                    if "resultados" in datos and len(datos["resultados"]) > 0:
+                        # Limitamos a 10 para mantener la vista limpia
+                        for item in datos["resultados"][:10]:
+                            info = {
+                                "marca": item.get("nombre", "Sin Nombre Comercial"),
+                                "generico": item.get("pactivos", "No especificado"),
+                                "fabricante": item.get("labtitular", "Laboratorio Desconocido"),
+                                # CIMA usa 'receta' como booleano o string
+                                "proposito": "Requiere Receta Médica" if item.get("receta") else "Venta Libre / Sin datos"
+                            }
+                            resultados.append(info)
+                    else:
+                        error = "No se encontraron medicamentos con ese nombre en el registro."
+                else:
+                    error = "La API externa no respondió correctamente."
+                    
+            except Exception as e:
+                error = "Error de conexión con el servidor de medicamentos."
+                print(f"Error API CIMA: {e}")
+
+    return render_template("buscar_medicamentos.html", resultados=resultados, busqueda=busqueda, error=error)
+
+
+# --- AUTENTICACIÓN (LOGIN / REGISTRO) ---
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -106,6 +133,7 @@ def register():
         try:
             db = get_db()
             cursor = db.cursor()
+            # Se asigna rol 'usuario' por defecto
             cursor.execute("INSERT INTO usuarios (nombre, email, password, rol) VALUES (%s,%s,%s,'usuario')", 
                            (nombre, email, password))
             db.commit()
@@ -123,7 +151,7 @@ def logout():
     flash("Has cerrado sesión", "info")
     return redirect(url_for("inicio"))
 
-# --- CRUD PROVEEDORES ---
+# --- GESTIÓN DE PROVEEDORES (CRUD) ---
 
 @app.route("/proveedores")
 def proveedores():

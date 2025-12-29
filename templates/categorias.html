@@ -9,36 +9,33 @@
 
 <section class="hero-secundario">
   <h1>Gestión de Categorías</h1>
-  <p>Explora las categorías de medicamentos disponibles.</p>
+  <p>Explora las clases farmacológicas más comunes (Fuente: API OpenFDA).</p>
 </section>
 
 <section class="lista-items">
-  <h2>Categorías Existentes</h2>
+  <h2>Clases Farmacológicas Principales</h2>
+  
   <div class="grid-categorias">
     
+    {% for cat in categorias %}
     <div class="card">
-      <h3>Analgésicos</h3>
-      <p>Medicamentos para el alivio del dolor.</p>
-      <a href="#" class="btn">Ver productos</a>
+      <div style="font-size: 2rem; margin-bottom: 10px;">💊</div>
+      
+      <h3>{{ cat.term|title }}</h3>
+      
+      <p style="color: var(--color-texto-secundario); margin-bottom: 1rem;">
+          Esta categoría contiene oficialmente <strong>{{ cat.count }}</strong> productos registrados en la FDA.
+      </p>
+      
+      <a href="{{ url_for('buscar_medicamentos', busqueda=cat.term) }}" class="btn">Ver productos</a>
     </div>
-
-    <div class="card">
-      <h3>Antibióticos</h3>
-      <p>Para tratar infecciones bacterianas.</p>
-      <a href="#" class="btn">Ver productos</a>
+    
+    {% else %}
+    <div class="card" style="grid-column: 1 / -1; background-color: #fff3cd; border-color: #ffeeba;">
+      <h3 style="color: #856404;">⚠️ No se pudieron cargar las categorías</h3>
+      <p>Hubo un problema de conexión con la API externa. Por favor intenta más tarde.</p>
     </div>
-
-    <div class="card">
-      <h3>Antiinflamatorios</h3>
-      <p>Reducen la inflamación y el dolor.</p>
-      <a href="#" class="btn">Ver productos</a>
-    </div>
-
-    <div class="card">
-      <h3>Vitaminas</h3>
-      <p>Suplementos nutricionales.</p>
-      <a href="#" class="btn">Ver productos</a>
-    </div>
+    {% endfor %}
 
   </div>
 </section>
