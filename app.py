@@ -109,7 +109,7 @@ def buscar_medicamentos():
                         "marca": item["nombre_producto"],
                         "generico": item["concentracion"], 
                         "fabricante": item["titular_registro"],
-                        "proposito": f"Reg: {item['registro_sanitario']} | {item['forma_farmaceutica']}"
+                        "proposito": item['forma_farmaceutica']
                     })
             else:
                 # B. RESPALDO API (ESPAÑA)

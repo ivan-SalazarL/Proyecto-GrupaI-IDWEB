@@ -9,6 +9,15 @@ CREATE TABLE usuarios (
     rol ENUM('admin', 'usuario') DEFAULT 'usuario'
 );
 
+CREATE TABLE productos_digemid (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    registro_sanitario VARCHAR(100),
+    nombre_producto VARCHAR(255),
+    concentracion VARCHAR(255),
+    forma_farmaceutica VARCHAR(255),
+    titular_registro VARCHAR(255)
+);
+
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,

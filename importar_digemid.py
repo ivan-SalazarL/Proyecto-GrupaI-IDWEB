@@ -37,10 +37,10 @@ def importar_excel():
         
         print(f"✅ Conexión exitosa. Importando {len(df)} registros...")
         
-        # SQL: Mantenemos las 5 columnas para que la BD no falle
+        # SQL: Mantenemos las 4 columnas para que la BD no falle
         sql = """INSERT INTO productos_digemid 
-                 (registro_sanitario, nombre_producto, concentracion, forma_farmaceutica, titular_registro) 
-                 VALUES (%s, %s, %s, %s, %s)"""
+                 (nombre_producto, concentracion, forma_farmaceutica, titular_registro) 
+                 VALUES (%s, %s, %s, %s)"""
         
         count = 0
         for index, row in df.iterrows():
@@ -49,7 +49,6 @@ def importar_excel():
             val_registro = '-'  # <--- Esto evita el error de "Falta columna"
             
             valores = (
-                val_registro,           # 1. Registro (falso)
                 row[columna_nombre],    # 2. Nombre
                 row[columna_concent],   # 3. Concentración
                 row[columna_forma],     # 4. Forma
