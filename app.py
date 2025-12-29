@@ -1,17 +1,54 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
+import requests  # <--- IMPORTANTE: Necesario para la API openFDA
 
 app = Flask(__name__)
 app.secret_key = "clave_secreta_super_segura"
 
-# Configuración de BD
+# --- CONFIGURACIÓN DE BASE DE DATOS ---
 def get_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="", # Asegúrate que tu contraseña sea correcta (vacía o 'root')
+        password="", # Ajusta si tu MySQL tiene contraseña
         database="SistemaFarmaceutico"
     )
+
+# --- NUEVA FUNCIÓN: API OPENFDA ---
+@app.route("/buscar_medicamentos", methods=["GET", "POST"])
+def buscar_medicamentos():
+    resultados = []
+    busqueda = ""
+    error = None
+
+    if request.method == "POST":
+        busqueda = request.form.get("busqueda", "").strip()
+        
+        if busqueda:
+            try:
+                # Consultamos la API pública de openFDA
+                url = f"https://api.fda.gov/drug/label.json?search=openfda.brand_name:{busqueda}&limit=5"
+                
+                respuesta = requests.get(url)
+                datos = respuesta.json()
+
+                if "results" in datos:
+                    for item in datos["results"]:
+                        info = {
+                            "marca": item.get("openfda", {}).get("brand_name", ["N/A"])[0],
+                            "generico": item.get("openfda", {}).get("generic_name", ["N/A"])[0],
+                            "fabricante": item.get("openfda", {}).get("manufacturer_name", ["N/A"])[0],
+                            "proposito": item.get("purpose", ["No especificado"])[0]
+                        }
+                        resultados.append(info)
+                else:
+                    error = "No se encontraron medicamentos con ese nombre."
+            except Exception as e:
+                error = "Error al conectar con openFDA. Intenta nuevamente."
+                print(f"Error API: {e}")
+
+    return render_template("buscar_medicamentos.html", resultados=resultados, busqueda=busqueda, error=error)
+
 
 # --- RUTAS PÚBLICAS ---
 
@@ -30,11 +67,8 @@ def nosotros():
 @app.route("/contacto", methods=["GET", "POST"])
 def contacto():
     if request.method == "POST":
-        # Aquí podrías guardar el mensaje en la BD si quisieras,
-        # por ahora solo mostramos confirmación para cumplir el requisito de interacción.
         flash("Mensaje enviado correctamente. Te contactaremos pronto.", "success")
         return redirect(url_for("contacto"))
-        
     return render_template("contacto.html")
 
 # --- AUTENTICACIÓN ---
@@ -89,7 +123,7 @@ def logout():
     flash("Has cerrado sesión", "info")
     return redirect(url_for("inicio"))
 
-# --- CRUD PROVEEDORES (BACKEND REAL) ---
+# --- CRUD PROVEEDORES ---
 
 @app.route("/proveedores")
 def proveedores():
@@ -131,6 +165,7 @@ def eliminar_proveedor(id):
     db.close()
     flash("Proveedor eliminado", "success")
     return redirect(url_for("proveedores"))
+
 @app.route("/proveedor/editar/<int:id>", methods=["GET", "POST"])
 def editar_proveedor(id):
     if session.get("rol") != "admin":
@@ -156,14 +191,12 @@ def editar_proveedor(id):
         flash("Proveedor actualizado correctamente", "success")
         return redirect(url_for("proveedores"))
 
-    # Método GET: Mostrar el formulario con los datos actuales
     cursor.execute("SELECT * FROM proveedores WHERE id=%s", (id,))
     proveedor = cursor.fetchone()
     db.close()
     return render_template("editar_proveedor.html", p=proveedor)
 
-# --- TRANSACCIÓN (PEDIDOS) ---
-# Cumple con: "Rutas para alguna acción (reservar, comprar)"
+# --- PEDIDOS ---
 
 @app.route("/nuevo_pedido", methods=["GET", "POST"])
 def nuevo_pedido():
@@ -176,8 +209,6 @@ def nuevo_pedido():
 
     if request.method == "POST":
         proveedor_id = request.form["proveedor_id"]
-        # En un sistema real aquí guardarías detalles de productos, 
-        # por ahora guardamos la cabecera del pedido para cumplir la rúbrica.
         usuario_id = session["usuario_id"]
         
         cursor.execute("INSERT INTO pedidos (usuario_id, proveedor_id, estado) VALUES (%s, %s, 'Pendiente')",
@@ -187,13 +218,12 @@ def nuevo_pedido():
         flash("Pedido realizado con éxito", "success")
         return redirect(url_for("inicio"))
 
-    # GET: Mostrar formulario
     cursor.execute("SELECT * FROM proveedores WHERE estado='activo'")
     proveedores = cursor.fetchall()
     db.close()
     return render_template("nuevo_pedido.html", proveedores=proveedores)
 
-# --- PANEL ADMIN PROTEGIDO ---
+# --- PANEL ADMIN ---
 
 @app.route("/admin")
 def admin():
@@ -204,7 +234,6 @@ def admin():
     db = get_db()
     cursor = db.cursor(dictionary=True)
     
-    # Consultamos los pedidos uniendo tablas para ver nombres en lugar de IDs
     query = """
         SELECT p.id, u.nombre as usuario, prov.nombre as proveedor, p.fecha, p.estado 
         FROM pedidos p
@@ -218,5 +247,6 @@ def admin():
     
     return render_template("admin.html", pedidos=pedidos)
 
+# --- INICIO DEL SERVIDOR ---
 if __name__ == "__main__":
     app.run(debug=True)

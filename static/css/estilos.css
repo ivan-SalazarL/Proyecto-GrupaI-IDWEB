@@ -176,7 +176,6 @@ nav a.activo {
 }
 
 /* Formularios e Inputs */
-/* AHORA INCLUIMOS input[type="password"] */
 input[type="text"], 
 input[type="email"], 
 input[type="password"], 
@@ -427,7 +426,6 @@ footer p {
   from { transform: translateY(-50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-/* --- ESTILOS EXCLUSIVOS PÁGINA LOGIN (Versión con Imagen) --- */
 
 .login-wrapper {
   display: flex;
