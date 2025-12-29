@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Sistema Farmacéutico{% endblock %}</title>
+  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -13,14 +17,12 @@
     <nav>
       <div class="nav-left">
         <img src="https://static.vecteezy.com/system/resources/previews/000/615/933/original/medical-cross-and-health-pharmacy-logo-vector-template.jpg" alt="Logo" width="50" style="border-radius: 50%;">
-        
         <a href="{{ url_for('inicio') }}">Inicio</a>
         <a href="{{ url_for('categorias') }}">Categorías</a>
         <a href="{{ url_for('proveedores') }}">Proveedores</a>
         <a href="{{ url_for('nosotros') }}">Nosotros</a>
         <a href="{{ url_for('contacto') }}">Contacto</a>
-        <a href="{{ url_for('inicio') }}">Inicio</a>
-        <a href="{{ url_for('buscar_medicamentos') }}">Buscados</a> 
+        <a href="{{ url_for('buscar_medicamentos') }}">Buscador</a> 
       </div>
       
       <div class="nav-right">
