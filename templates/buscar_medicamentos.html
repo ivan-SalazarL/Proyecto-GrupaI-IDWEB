@@ -36,10 +36,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre Comercial</th>
-                        <th>Nombre Genérico</th>
+                        <th>Nombre </th>
+                        <th>Concentracion</th>
                         <th>Fabricante</th>
-                        <th>Propósito</th>
+                        <th>Presentacion</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,7 @@
                         <td style="color: var(--color-primario);"><strong>{{ med.marca }}</strong></td>
                         <td>{{ med.generico }}</td>
                         <td>{{ med.fabricante }}</td>
-                        <td>{{ med.proposito[:100] }}...</td>
+                        <td>{{ med.proposito[:100] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

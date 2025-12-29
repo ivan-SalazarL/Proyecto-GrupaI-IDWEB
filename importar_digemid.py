@@ -20,9 +20,7 @@ def importar_excel():
         df = pd.read_excel(archivo_excel, dtype=str)
         df = df.fillna('') # Rellenar vacíos
 
-        # --- NOMBRES EXACTOS SEGÚN TU IMAGEN ---
-        # Asignamos las variables a los nombres que vimos en la foto
-        columna_registro = 'Num_RegSan'
+        # --- NOMBRES DE COLUMNAS (SOLO LAS QUE TÚ QUIERES) ---
         columna_nombre   = 'Nom_Prod'
         columna_concent  = 'Concent'
         columna_forma    = 'Nom_Form_Farm'
@@ -32,7 +30,6 @@ def importar_excel():
         # Verificación de seguridad
         if columna_nombre not in df.columns:
             print(f"❌ ERROR: No encuentro la columna '{columna_nombre}' en el Excel.")
-            print("   Asegúrate de que la Fila 1 del Excel tenga los encabezados.")
             sys.exit()
 
         conn = mysql.connector.connect(**db_config)
@@ -40,30 +37,33 @@ def importar_excel():
         
         print(f"✅ Conexión exitosa. Importando {len(df)} registros...")
         
-        # Consulta SQL
+        # SQL: Mantenemos las 5 columnas para que la BD no falle
         sql = """INSERT INTO productos_digemid 
                  (registro_sanitario, nombre_producto, concentracion, forma_farmaceutica, titular_registro) 
                  VALUES (%s, %s, %s, %s, %s)"""
         
         count = 0
         for index, row in df.iterrows():
+            
+            # --- TRUCO: ENVIAMOS UN VALOR FALSO AL REGISTRO ---
+            val_registro = '-'  # <--- Esto evita el error de "Falta columna"
+            
             valores = (
-                row[columna_registro],
-                row[columna_nombre],
-                row[columna_concent],
-                row[columna_forma],
-                row[columna_titular]
+                val_registro,           # 1. Registro (falso)
+                row[columna_nombre],    # 2. Nombre
+                row[columna_concent],   # 3. Concentración
+                row[columna_forma],     # 4. Forma
+                row[columna_titular]    # 5. Titular
             )
             cursor.execute(sql, valores)
             count += 1
             
-            # Guardar progreso cada 1000 filas
             if count % 1000 == 0:
                 print(f"   -> Guardados {count} productos...")
                 conn.commit()
 
-        conn.commit() # Guardado final
-        print(f"\n🎉 ¡ÉXITO! Se importaron {count} productos a la base de datos.")
+        conn.commit()
+        print(f"\n🎉 ¡ÉXITO! Se importaron {count} productos (sin usar Registro Sanitario real).")
 
     except Exception as e:
         print(f"\n❌ OCURRIÓ UN ERROR: {e}")
