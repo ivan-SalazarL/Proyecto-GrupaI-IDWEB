@@ -519,21 +519,21 @@ footer p {
 @media (max-width: 899px) {
   .login-wrapper {
     padding: 1rem;
-    align-items: center; /* Centrado simple en móvil */
+    align-items: center; 
   }
   .login-card {
     padding: 2rem;
-    box-shadow: none; /* Sombra más ligera en móvil */
+    box-shadow: none; 
     border: none;
   }
 }
 /* --- BOTÓN LOGIN EN NAV --- */
 .btn-login-nav {
-  background-color: var(--color-primario); /* Azul sólido */
-  color: white !important; /* Texto blanco forzado */
-  padding: 0.6rem 1.5rem !important; /* Más relleno para parecer botón */
-  border-radius: 50px; /* Bordes redondos estilo pastilla */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra suave */
+  background-color: var(--color-primario);
+  color: white !important; 
+  padding: 0.6rem 1.5rem !important; 
+  border-radius: 50px; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
   font-weight: 600;
   transition: all 0.3s ease;
   border: 1px solid transparent;
@@ -541,13 +541,13 @@ footer p {
 
 .btn-login-nav:hover {
   background-color: var(--color-primario-oscuro);
-  transform: translateY(-2px); /* Se eleva un poco al pasar el mouse */
+  transform: translateY(-2px); 
   box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
 /* Ajuste para que se vea bien en modo oscuro */
 body.dark-mode .btn-login-nav {
-  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Resplandor azulado */
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); 
 }
 input, select, textarea {
   border: 1px solid #cbd5e1;
@@ -556,5 +556,5 @@ input, select, textarea {
 
 input:focus {
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); /* Ring sutil */
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); 
 }
