@@ -15,16 +15,16 @@
     <section class="resumen-sistema">
       <div class="stats-grid">
         <div class="stat-card">
-          <h3>124</h3>
-          <p>Productos</p>
+          <h3>{{ total }}</h3>
+          <p>Productos Registrados</p>
         </div>
         <div class="stat-card">
-          <h3>MySQL</h3>
-          <p>Conectado</p>
+          <h3 style="color: var(--color-secundario);">Online</h3>
+          <p>Estado MySQL</p>
         </div>
         <div class="stat-card alerta">
-          <h3>3</h3>
-          <p>Stock Bajo</p>
+          <h3>{{ bajo }}</h3>
+          <p>Stock Crítico (< 20)</p>
         </div>
       </div>
     </section>

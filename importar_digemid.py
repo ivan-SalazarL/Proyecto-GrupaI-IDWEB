@@ -18,7 +18,7 @@ def importar_excel():
     try:
         # Leemos el Excel
         df = pd.read_excel(archivo_excel, dtype=str)
-        df = df.fillna('') # Rellenar vacíos
+        df = df.fillna('') 
 
         # --- NOMBRES DE COLUMNAS (SOLO LAS QUE TÚ QUIERES) ---
         columna_nombre   = 'Nom_Prod'
@@ -29,13 +29,13 @@ def importar_excel():
 
         # Verificación de seguridad
         if columna_nombre not in df.columns:
-            print(f"❌ ERROR: No encuentro la columna '{columna_nombre}' en el Excel.")
+            print(f"ERROR: No encuentro la columna '{columna_nombre}' en el Excel.")
             sys.exit()
 
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
         
-        print(f"✅ Conexión exitosa. Importando {len(df)} registros...")
+        print(f"Conexión exitosa. Importando {len(df)} registros...")
         
         # SQL: Mantenemos las 4 columnas para que la BD no falle
         sql = """INSERT INTO productos_digemid 
@@ -62,10 +62,10 @@ def importar_excel():
                 conn.commit()
 
         conn.commit()
-        print(f"\n🎉 ¡ÉXITO! Se importaron {count} productos (sin usar Registro Sanitario real).")
+        print(f"\n¡ÉXITO! Se importaron {count} productos (sin usar Registro Sanitario real).")
 
     except Exception as e:
-        print(f"\n❌ OCURRIÓ UN ERROR: {e}")
+        print(f"\nOCURRIÓ UN ERROR: {e}")
     finally:
         if 'conn' in locals() and conn.is_connected():
             cursor.close()

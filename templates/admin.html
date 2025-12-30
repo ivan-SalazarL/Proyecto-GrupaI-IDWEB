@@ -18,12 +18,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>ID Pedido</th>
+                    <th>ID</th>
                     <th>Usuario</th>
-                    <th>Proveedor Solicitado</th>
+                    <th>Proveedor</th>
+                    <th>Detalle del Pedido</th> 
                     <th>Fecha</th>
-                    <th>Estado</th>
-                </tr>
+                    <th>Estado Actual</th>
+                    <th>Acciones (Modificar / Eliminar)</th> </tr>
             </thead>
             <tbody>
                 {% for pedido in pedidos %}
@@ -31,12 +32,42 @@
                     <td>#{{ pedido.id }}</td>
                     <td>{{ pedido.usuario }}</td>
                     <td>{{ pedido.proveedor }}</td>
+                    <td>{{ pedido.detalle }}</td> 
                     <td>{{ pedido.fecha }}</td>
-                    <td><span class="badge badge-activo">{{ pedido.estado }}</span></td>
+                    <td>
+                        {% if pedido.estado == 'Entregado' %}
+                            <span class="badge badge-activo">{{ pedido.estado }}</span>
+                        {% elif pedido.estado == 'Cancelado' %}
+                            <span class="badge badge-inactivo">{{ pedido.estado }}</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #ffeeba; color: #856404; border: 1px solid #ffeeba;">{{ pedido.estado }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <form action="{{ url_for('cambiar_estado_pedido', id=pedido.id) }}" method="POST" style="display:flex; gap:5px; margin:0;">
+                                <select name="nuevo_estado" style="padding: 5px; font-size: 0.85rem; width: auto; margin-bottom: 0;">
+                                    <option value="Pendiente" {% if pedido.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                                    <option value="En Proceso" {% if pedido.estado == 'En Proceso' %}selected{% endif %}>En Proceso</option>
+                                    <option value="Entregado" {% if pedido.estado == 'Entregado' %}selected{% endif %}>Entregado</option>
+                                    <option value="Cancelado" {% if pedido.estado == 'Cancelado' %}selected{% endif %}>Cancelado</option>
+                                </select>
+                                <button type="submit" class="btn" style="padding: 5px 8px; font-size: 0.8rem; background-color: var(--color-primario);" title="Guardar Cambio">💾</button>
+                            </form>
+
+                            <a href="{{ url_for('eliminar_pedido', id=pedido.id) }}" 
+                               class="btn" 
+                               style="background-color: #dc3545; padding: 5px 8px; font-size: 0.8rem;"
+                               onclick="return confirm('⚠️ ¿Estás seguro de que quieres eliminar el pedido #{{ pedido.id }}? Esta acción no se puede deshacer.');"
+                               title="Eliminar Pedido">
+                               🗑️
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="5">No hay pedidos registrados.</td>
+                    <td colspan="6" style="text-align: center;">No hay pedidos registrados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -71,6 +71,8 @@ Para importar la base de datos:
 2. Importar la base de datos usando database.sql.
 3. Instalar las dependencias:
    pip install -r .\requeriments.txt
+4. Carga Masiva de Datos (Excel/CSV)
+   python importar_digemid.py
 4. Ejecutar la aplicación:
    python app.py
 5. Abrir el navegador en:

@@ -26,7 +26,8 @@ CREATE TABLE productos_digemid (
     nombre_producto VARCHAR(255),
     concentracion VARCHAR(255),
     forma_farmaceutica VARCHAR(255),
-    titular_registro VARCHAR(255)
+    titular_registro VARCHAR(255),
+    stock INT DEFAULT 0  
 );
 
 -- =========================================================
@@ -56,8 +57,9 @@ CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT,
     proveedor_id INT,
+    detalle TEXT,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    estado VARCHAR(50),
+    estado VARCHAR(50) DEFAULT 'Pendiente',
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
 );
@@ -175,3 +177,11 @@ INSERT INTO proveedores (nombre, contacto, telefono, estado) VALUES
 ('VITA PHARMA S.A.C.', 'Contacto Comercial', '999000089', 'activo'),
 ('VITALIS PERU S.A.C.', 'Contacto Comercial', '999000090', 'activo'),
 ('WORLD DRUG PHARMACEUTICAL S.A.C.', 'Contacto Comercial', '999000091', 'activo');
+
+-- =========================================================
+--  (OPCIONAL) TRIGGER O SCRIPT PARA STOCK INICIAL
+--  Si ya tienes productos, esto les dará stock aleatorio.
+--  Si importas desde Python después, asegúrate de que tu script
+--  de carga maneje o ignore esta columna.
+-- =========================================================
+-- UPDATE productos_digemid SET stock = FLOOR(RAND() * 100);

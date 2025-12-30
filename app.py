@@ -21,7 +21,24 @@ def get_db():
 # -------------------------------------------------
 @app.route("/")
 def inicio():
-    return render_template("index.html")
+    db = get_db()
+    cursor = db.cursor()
+    
+    # 1. Contar Total de Productos registrados
+    cursor.execute("SELECT COUNT(*) FROM productos_digemid")
+    total_productos = cursor.fetchone()[0]
+    
+    # 2. Contar Productos con Stock Bajo (ejemplo: menos de 20 unidades)
+    # Si acabas de crear la columna, esto funcionará perfecto.
+    try:
+        cursor.execute("SELECT COUNT(*) FROM productos_digemid WHERE stock < 20")
+        stock_bajo = cursor.fetchone()[0]
+    except:
+        stock_bajo = 0 # Por si acaso falle la consulta
+        
+    db.close()
+    
+    return render_template("index.html", total=total_productos, bajo=stock_bajo)
 
 @app.route("/nosotros")
 def nosotros():
@@ -251,13 +268,17 @@ def nuevo_pedido():
     cursor = db.cursor(dictionary=True)
 
     if request.method == "POST":
+        proveedor_id = request.form["proveedor_id"]
+        detalle = request.form["detalle"]  # <--- 1. Capturamos el texto
+
         cursor.execute(
-            "INSERT INTO pedidos (usuario_id, proveedor_id, estado) VALUES (%s,%s,'Pendiente')",
-            (session["usuario_id"], request.form["proveedor_id"])
+            # <--- 2. Agregamos 'detalle' al INSERT
+            "INSERT INTO pedidos (usuario_id, proveedor_id, detalle, estado) VALUES (%s, %s, %s, 'Pendiente')",
+            (session["usuario_id"], proveedor_id, detalle)
         )
         db.commit()
         db.close()
-        flash("Pedido realizado", "success")
+        flash("Pedido realizado correctamente", "success")
         return redirect(url_for("inicio"))
 
     cursor.execute("SELECT * FROM proveedores WHERE estado='activo'")
@@ -276,7 +297,7 @@ def admin():
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("""
-        SELECT p.id, u.nombre usuario, prov.nombre proveedor, p.fecha, p.estado
+        SELECT p.id, u.nombre usuario, prov.nombre proveedor, p.detalle, p.fecha, p.estado
         FROM pedidos p
         JOIN usuarios u ON p.usuario_id = u.id
         JOIN proveedores prov ON p.proveedor_id = prov.id
@@ -306,5 +327,36 @@ def admin_contactos():
     return render_template("admin_contactos.html", contactos=contactos)
 
 # -------------------------------------------------
+# ADMIN - GESTIÓN DE PEDIDOS (CRUD: UPDATE / DELETE)
+# -------------------------------------------------
+@app.route("/admin/pedido/estado/<int:id>", methods=["POST"])
+def cambiar_estado_pedido(id):
+    if session.get("rol") != "admin":
+        return redirect(url_for("inicio"))
+    
+    nuevo_estado = request.form["nuevo_estado"]
+    
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("UPDATE pedidos SET estado = %s WHERE id = %s", (nuevo_estado, id))
+    db.commit()
+    db.close()
+    
+    flash(f"Estado del pedido #{id} actualizado a '{nuevo_estado}'", "success")
+    return redirect(url_for("admin"))
+
+@app.route("/admin/pedido/eliminar/<int:id>")
+def eliminar_pedido(id):
+    if session.get("rol") != "admin":
+        return redirect(url_for("inicio"))
+        
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM pedidos WHERE id = %s", (id,))
+    db.commit()
+    db.close()
+    
+    flash(f"Pedido #{id} eliminado correctamente", "success")
+    return redirect(url_for("admin"))
 if __name__ == "__main__":
     app.run(debug=True)
