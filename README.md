@@ -70,7 +70,7 @@ Para importar la base de datos:
 1. Copiar o clonar el proyecto.
 2. Importar la base de datos usando database.sql.
 3. Instalar las dependencias:
-   pip install -r requirements.txt
+   pip install -r .\requeriments.txt
 4. Ejecutar la aplicación:
    python app.py
 5. Abrir el navegador en:
