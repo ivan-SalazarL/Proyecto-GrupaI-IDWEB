@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Proveedores - Sistema Farmacéutico{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Proveedores</strong>
+</div>
+
+<section class="hero-secundario">
+  <h1>Directorio de Proveedores</h1>
+  <p>Administra la información de los laboratorios y distribuidores (CRUD MySQL).</p>
+  
+</section>
+
+<section class="lista-items">
+  <h2>Proveedores Registrados</h2>
+  
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Contacto</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in proveedores %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.contacto }}</td>
+            <td>{{ p.telefono }}</td>
+            <td>
+                <span class="badge {% if p.estado == 'activo' %}badge-activo{% else %}badge-inactivo{% endif %}">
+                    {{ p.estado }}
+                </span>
+            </td>
+            <td>
+                <a href="{{ url_for('editar_proveedor', id=p.id) }}" class="btn" style="background-color: #ffc107; color: #000; font-size: 0.8rem;">Editar</a>
+                <a href="{{ url_for('eliminar_proveedor', id=p.id) }}" class="btn" style="background-color: #dc3545; font-size: 0.8rem;" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" style="text-align:center;">No hay proveedores registrados en la Base de Datos.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

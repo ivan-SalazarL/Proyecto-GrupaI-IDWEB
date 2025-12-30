@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Nosotros - Sistema Farmacéutico{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Nosotros</strong>
+</div>
+
+<section class="hero-secundario">
+  <h1>Sobre Nuestro Equipo</h1>
+  <p>Conoce a los desarrolladores detrás de este proyecto.</p>
+</section>
+
+<section class="equipo">
+  <h2>El Equipo de Desarrollo</h2>
+  <div class="grid-categorias">
+    
+    <div class="card">
+      <div style="font-size: 3rem;">👨‍💻</div>
+      <h3>Iván Salazar</h3>
+      <p><strong>Jefe de Proyecto / Backend</strong></p>
+      <p>Encargado de la lógica en Python y Flask.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size: 3rem;">🎨</div>
+      <h3>Franklin Ulloa</h3>
+      <p><strong>Frontend / UX</strong></p>
+      <p>Diseño de interfaces y experiencia de usuario.</p>
+    </div>
+
+    <div class="card">
+      <div style="font-size: 3rem;">🗄️</div>
+      <h3>Michael Vasquez</h3>
+      <p><strong>Base de Datos</strong></p>
+      <p>Estructuración y gestión de MySQL.</p>
+    </div>
+    
+    <div class="card">
+      <div style="font-size: 3rem;">📝</div>
+      <h3>Samuel Menéndez</h3>
+      <p><strong>Frontend / Documentación</strong></p>
+      <p>Apoyo en interfaces y manuales.</p>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

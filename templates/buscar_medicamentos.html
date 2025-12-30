@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Buscador - Sistema Farmacéutico{% endblock %}
+
+{% block content %}
+<div class="breadcrumbs">
+  <a href="{{ url_for('inicio') }}">Inicio</a> <span>/</span> <strong>Buscador API</strong>
+</div>
+
+<section class="hero-secundario">
+  <h1>Buscador de Medicamentos </h1>
+  <p>Consulta información oficial de la FDA en tiempo real.</p>
+</section>
+
+<section class="card" style="max-width: 600px; margin: 0 auto 2rem auto;">
+    <form method="POST" style="display: flex; gap: 10px;">
+        <input type="text" name="busqueda" placeholder="Ej: Ibuprofen, Aspirin..." value="{{ busqueda }}" required style="margin-bottom: 0;">
+        <button type="submit" class="cta-button">Buscar</button>
+    </form>
+    <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+        * Nota: Usa nombres en inglés para mejores resultados.
+    </p>
+</section>
+
+<section class="lista-items">
+    {% if error %}
+        <div class="card stat-card alerta" style="max-width: 600px; margin: 0 auto;">
+            <h3>⚠️</h3>
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+
+    {% if resultados %}
+        <h2>Resultados Encontrados</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre </th>
+                        <th>Concentracion</th>
+                        <th>Fabricante</th>
+                        <th>Presentacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for med in resultados %}
+                    <tr>
+                        <td style="color: var(--color-primario);"><strong>{{ med.marca }}</strong></td>
+                        <td>{{ med.generico }}</td>
+                        <td>{{ med.fabricante }}</td>
+                        <td>{{ med.proposito[:100] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

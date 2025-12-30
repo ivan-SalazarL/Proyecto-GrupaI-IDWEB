@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="hero">
+      <h1>Bienvenido al Sistema de Gestión Farmacéutica</h1>
+      <p>Tu solución integral para la administración y pedido de medicamentos a proveedores.</p>
+      
+      {% if session.get('usuario') %}
+        <a href="{{ url_for('nuevo_pedido') }}" class="cta-button">Realizar Nuevo Pedido</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="cta-button">Ingresar al Sistema</a>
+      {% endif %}
+    </section>
+
+    <section class="resumen-sistema">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>124</h3>
+          <p>Productos</p>
+        </div>
+        <div class="stat-card">
+          <h3>MySQL</h3>
+          <p>Conectado</p>
+        </div>
+        <div class="stat-card alerta">
+          <h3>3</h3>
+          <p>Stock Bajo</p>
+        </div>
+      </div>
+    </section>
+{% endblock %}

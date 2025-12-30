@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Mensajes de Contacto{% endblock %}
+
+{% block content %}
+<section class="hero-secundario">
+    <h1>Mensajes de Contacto</h1>
+    <p>Consultas enviadas desde el formulario de contacto</p>
+</section>
+
+<section class="lista-items">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Mensaje</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in contactos %}
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.nombre }}</td>
+                    <td>{{ c.email }}</td>
+                    <td style="max-width:300px;">{{ c.mensaje }}</td>
+                    <td>{{ c.fecha }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No hay mensajes registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
